@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "245812861960",
+    "project_id": "chat-ikokas",
+    "storage_bucket": "chat-ikokas.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245812861960:android:99d8a66c53131d84af05bd",
+        "android_client_info": {
+          "package_name": "com.ikokas.chat_ikokas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245812861960-sf715csd48jfskg16arth8vq2386ibmv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ikokas.chat_ikokas",
+            "certificate_hash": "98e20e29951fd5bfa0f8a538b61182d3fda42461"
+          }
+        },
+        {
+          "client_id": "245812861960-jfdrbqtmm7snq2lihffe6dqdlr70i77b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK6ENWFcNSQgTUGGxYesGVTI-ts2rqDLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245812861960-jfdrbqtmm7snq2lihffe6dqdlr70i77b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
