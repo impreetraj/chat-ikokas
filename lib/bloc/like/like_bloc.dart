@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'like_event.dart';
 import 'like_state.dart';
 import '../../models/like_model.dart';
+import '../../services/push_notification_service.dart';
 
 class LikeBloc extends Bloc<LikeEvent, LikeState> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -127,6 +128,17 @@ class LikeBloc extends Bloc<LikeEvent, LikeState> {
             'message': '$currentUserName reacted ${event.reaction} to your post',
             'timestamp': DateTime.now().toIso8601String(),
           });
+          
+          // Send FCM Push Notification
+          final targetUserDoc = await firestore.collection('users').doc(event.postUserId).get();
+          final targetFCMToken = targetUserDoc.data()?['fcmToken'];
+          if (targetFCMToken != null) {
+            PushNotificationService().sendNotification(
+              receiverToken: targetFCMToken,
+              title: "New Reaction",
+              body: "$currentUserName reacted ${event.reaction} to your post",
+            );
+          }
         }
       }
 

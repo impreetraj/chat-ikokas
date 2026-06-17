@@ -17,11 +17,66 @@ import 'package:chat_ikokas/bloc/like/like_bloc.dart';
 import 'package:chat_ikokas/bloc/post/post_bloc.dart';
 import 'package:chat_ikokas/bloc/post/post_event.dart';
 import 'package:chat_ikokas/bloc/profile/profile_bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+ 
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await LocalNotificationService.instance.initialize();
+  
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  
+  // Request permission
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  // Handle Foreground Messages
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    if (message.notification != null) {
+      LocalNotificationService.instance.showNotification(
+        title: message.notification!.title ?? 'New Notification',
+        body: message.notification!.body ?? '',
+      );
+    }
+  });
+
+  // Save Token when user logs in
+  FirebaseAuth.instance.authStateChanges().listen((User? user) async {
+    if (user != null) {
+      try {
+        final token = await FirebaseMessaging.instance.getToken();
+        if (token != null) {
+          await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+            'fcmToken': token,
+          });
+        }
+      } catch (e) {
+        print("Failed to save FCM token: $e");
+      }
+    }
+  });
+
+  // Refresh token if it changes
+  FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+        'fcmToken': newToken,
+      });
+    }
+  });
+
   runApp(const MyApp());
 }
 

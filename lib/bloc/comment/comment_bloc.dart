@@ -6,6 +6,7 @@ import 'comment_event.dart';
 import 'comment_state.dart';
 import '../../services/comment_database_helper.dart';
 import '../../models/comment_model.dart';
+import '../../services/push_notification_service.dart';
 
 class CommentBloc extends Bloc<CommentEvent, CommentState> {
   CommentBloc() : super(CommentInitial()) {
@@ -119,6 +120,17 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
           'message': '$authorName commented on your post',
           'timestamp': DateTime.now().toIso8601String(),
         });
+
+        // Send FCM Push Notification
+        final targetUserDoc = await firestore.collection('users').doc(event.postUserId).get();
+        final targetFCMToken = targetUserDoc.data()?['fcmToken'];
+        if (targetFCMToken != null) {
+          PushNotificationService().sendNotification(
+            receiverToken: targetFCMToken,
+            title: "New Comment",
+            body: "$authorName commented on your post: ${event.content}",
+          );
+        }
       }
 
       // final newComment = CommentModel(
