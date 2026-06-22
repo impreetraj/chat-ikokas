@@ -12,6 +12,16 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
+class FaceVerificationRequired extends AuthState {
+  final UserModel user;
+  final bool isSignUp;
+
+  const FaceVerificationRequired(this.user, this.isSignUp);
+
+  @override
+  List<Object?> get props => [user, isSignUp];
+}
+
 class Authenticated extends AuthState {
   final UserModel user;
 
@@ -30,4 +40,13 @@ class AuthError extends AuthState {
 
   @override
   List<Object?> get props => [error];
+}
+
+class FaceVerificationFailed extends AuthState {
+  final String message;
+
+  const FaceVerificationFailed(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }

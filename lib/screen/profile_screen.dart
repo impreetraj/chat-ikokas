@@ -1,5 +1,6 @@
 import 'package:chat_ikokas/bloc/auth/auth_bloc.dart';
 import 'package:chat_ikokas/bloc/auth/auth_event.dart';
+import 'package:chat_ikokas/services/bio_matric.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,13 +99,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Text(
                     name,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
-                  Text(
-                    bio,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  Text(bio, maxLines: 1, overflow: TextOverflow.ellipsis),
                 ],
               ),
             ],
@@ -117,7 +117,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const EditProfileScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const EditProfileScreen(),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -147,6 +149,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: const Text('Logout'),
                 ),
               ),
+              // const SizedBox(width: 8),
+              // Expanded(
+              //   child: OutlinedButton(
+              //     onPressed: () {
+              //       BioMatric().authenticateLocally();
+              //     },
+              //     style: OutlinedButton.styleFrom(
+              //       foregroundColor: Colors.black,
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(8),
+              //       ),
+              //     ),
+              //     child: const Text('Biometric'),
+              //   ),
+              // ),
             ],
           ),
         ],

@@ -575,7 +575,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Row(
                                   children: [
                                     CircleAvatar(
-                                      backgroundImage: NetworkImage(post.photourl),
+                                      backgroundImage: post.photourl.isNotEmpty ? NetworkImage(post.photourl) : null,
+                                      child: post.photourl.isEmpty ? const Icon(Icons.person) : null,
                                     ),
                                     const SizedBox(width: 8),
                                     Expanded(
